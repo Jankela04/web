@@ -1,0 +1,228 @@
+# Specifikacija projekta
+
+Veb programiranje 2025/26
+
+Potrebno je kreirati veb aplikaciju koja funkcioniše kao platforma za igranje igrica, slično kao "Friv". Fokus je na platformi koja korisnicima omogućava da pregledaju i učitavaju online veb igrice, komuniciraju sa drugim igračima i prate statistiku igranja.
+
+Aplikacija mora podržavati registraciju, prijavu korisnika, pregled dostupnih igrica, komunikaciju između korisnika putem četa, kao i praćenje vremena provedenog u igrama.
+
+Sistem takođe mora omogućiti administratorima upravljanje igrama i korisnicima.
+
+Igrice na sajtu možete povezati putem iframe-a. Nije neophodno pravit svoje web igre.
+
+## Model podataka
+
+**Korisnik**
+
+- Ime
+- Prezime
+- Mejl adresa (jedinstvena)
+- Lozinka (heširana)
+- Datum rođenja
+- Uloga (Korisnik, Administrator)
+- Profilna slika (putanja do slike)
+- Datum registracije
+- Blokiran (boolean)
+
+**Igra**
+
+- Naziv
+- Opis
+- URL igrice (putanja do fajla sa iframe-om)
+- Slika igrice (thumbnail)
+- Kategorija (referenca)
+- Datum dodavanja
+- Aktivna (boolean)
+
+**Kategorija**
+
+- Naziv
+- Opis
+
+**Statistika**
+
+- Korisnik (referenca)
+- Igra (referenca)
+- Vreme početka
+- Vreme završetka
+
+**Postignuća (Achievements)**
+
+- Korisnik (referenca)
+- Igra (referenca)
+- Naziv postignuća
+- Opis
+
+Model podataka je dozvoljeno menjati u skladu sa potrebama projekta.
+
+# Funkcionalnosti
+
+# Neprijavljeni korisnik
+
+Prva stranica aplikacije je informativna i sadrži osnovni opis platforme i dostupnih funkcionalnosti.
+
+Na početnoj stranici prikazati:
+
+- Ukupan broj registrovanih korisnika
+- Ukupan broj dostupnih igrica
+
+Ove informacije se dobijaju sa backend-a (dobavlja se samo broj, ne i podaci o korisnicima).
+
+Neprijavljeni korisnik može:
+
+- Pregledati listu igrica
+- Otvoriti stranicu pojedinačne igrice
+- Videti ocene i komentare korisnika
+
+Ne može pokrenuti igru niti učestvovati u četu bez prijave.
+
+# Registrovani korisnik (uloga: Korisnik)
+
+## Pregled igrica
+
+- Pregled svih dostupnih igrica u sistemu.
+- Za svaku igru prikazati naziv, sliku, kategoriju, prosečnu ocenu
+- Omogućiti pretragu po nazivu, filtriranje po kategoriji, sortiranje po oceni
+
+## Stranica igrice
+
+- Klikom na igricu otvara se stranica koja sadrži:
+  - Naziv igrice
+  - Opis
+  - Iframe u kome se učitava igrica
+  - Ocene i komentare korisnika
+- Kada korisnik napusti igru/stranicu:
+  - Beleži se vreme završetka
+  - Računa se ukupno vreme igranja koje se posle koristi u statistikama
+
+## Chat
+
+- Registrovani korisnici mogu komunicirati putem četa.
+- Chat je globalan i sve poruke se prikazuju na početnoj stranici
+- Nije potrebno čuvati istorju poruka u bazi
+
+## Recenzije i ocenjivanje igrica
+
+- Korisnik može ostaviti ocenu za igricu (1-5)
+- Korisnik može ostaviti komentar
+
+## Statistika igranja
+
+Korisnik ima pristup ličnoj statistici igranja.
+
+Prikazati:
+
+- Ukupno vreme igranja
+- Najigranije igrice (Vreme igranja za svaku igru)
+- Broj pokretanja igrica
+- Ukupno vreme igranja po kategorijama
+
+## Podešavanje profila
+
+Korisnik može:
+
+- Izmeniti lične podatke
+- Promeniti profilnu sliku
+- Promeniti lozinku
+
+# Administrator
+
+## Upravljanje igrama
+
+Administrator može:
+
+- Dodati novu igricu
+- Izmeniti postojeću igricu
+- Deaktivirati igricu
+
+Prilikom dodavanja igrice potrebno je uneti:
+
+- Naziv
+- Opis
+- Putanju do html fajla sa igricom
+- Kategoriju
+- Putanju do slike
+
+HTML fajlove igrica dodavati na backend u /src/main/resources/games/{naziv_igre}/index.html
+
+Primer strukture:
+
+- /src/main/resources/games/clicker-heroes/index.html
+- /src/main/resources/games/mr-mine/index.html
+
+Materijali: <https://canvas.ftn.uns.ac.rs/courses/106/files/folder/Projekat>
+
+Na internetu pronađite još neku iframe igricu i napravite svoje html fajlove.
+
+- <https://playsaurus.com/embed-our-games>
+- <https://cdn-factory.marketjs.com/en/excavator-challenge/index.html>
+
+Bonus: Možete napraviti svoju mini igru (iks oks, memorije, sudoku…)
+
+## Automatsko učitavanje igara
+
+Prilikom startovanja springboot aplikacije, potrebno je da backend automatski upiše igrice iz resources/games u bazu ako već ne postoje
+
+Na primer:
+
+![](data:image/png;base64,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)
+
+Backend treba da iterira kroz folder i upiše u bazu pronađene igrice
+
+Primer baze podataka.
+
+| Naziv | Opis | URL igrice                      | Thumbnail                     | Kat. | Datum dodavanja | Aktivna |
+| ----- | ---- | ------------------------------- | ----------------------------- | ---- | --------------- | ------- |
+| …     | …    | games/clicker-heroes/index.html | games/clicker-heroes/icon.png | \-   | (datum)         | T       |
+| ---   | ---  | ---                             | ---                           | ---  | ---             | ---     |
+| …     | …    | games/mr-mine/index.html        | games/mr-mine/icon.png        | \-   | (datum)         | T       |
+| ---   | ---  | ---                             | ---                           | ---  | ---             | ---     |
+
+## Upravljanje korisnicima
+
+Administrator može:
+
+- pregledati sve korisnike
+- blokirati / odblokirati korisnika
+- pregledati statistiku igranja korisnika
+
+Blokiran korisnik ne može da se prijavi u sistem.
+
+## Upravljanje kategorijama
+
+- Dodavati nove kategorije igrica
+- Brisanje kategorije
+- Menjati nazive kategorija
+
+## Monitoring
+
+- Sve sesije igranja
+- Statistiku igranja po igrama
+- Najigranije igrice u sistemu
+
+## Dashboard
+
+- Prikaz ukupnog broja korisnika
+- Broj aktivnih korisnika (aktivnost u poslednjih 30 dana)
+- Ukupan broj igrica
+- Najigranije igrice u poslednjih 30 dana
+- Najaktivnije korisnike
+
+## **Ocenjivanje projektnog zadatka**
+
+- Potrebno je prijaviti timove u dokumentu na [linku](https://docs.google.com/spreadsheets/d/1vMdDExQJaIbploN2_t7G89vgYKjIaC57XEzNM-dmW_8/edit?usp=sharing) i napraviti github repozitorijum na github classroom platformi.
+- U git istoriji se mora jasno videti tok razvoja u koji moraju biti uključeni svi članovi tima. Svaki član tima na svakoj kontrolnoj tački (osim prve) mora da ima **minimum 2 grane i 5 komita** koji se odnose na funkcionalnosti za tu kontrolnu tačku. **Neće biti priznati projekti čiji su svi komiti napravljeni 2 dana pre odbrane kontrolne tačke**, mora se jasno videti kontinuitet rada na projektu. Za svaku kontrolnu tačku potrebno je da se vidi da je rađeno **minimum nedelju dana**.
+- Dizajn korisničkog interfejsa kao i stilovi su prepušteni studentu. Za olakšanje formiranja layouta stranica studenti mogu koristiti neki od postojećih framework-a (Bootstrap, MaterializeCSS…).
+- Serverski deo aplikacije treba da bude realizovan korišćenjem Java programskog jezika i Spring Boot radnog okvira.
+- Zadatak se sastoji iz tri kontrolne tačke:
+
+1\. Predstavlja model (napravljene klase i veze između njih)
+
+2\. Predstavlja funkcionalnosti bekenda (Java Spring Boot deo)
+
+3\. Predstavlja uvezivanje sa frontendom (HTML, CSS, JS i Vue.js)
+
+- Studenti koji rade sami ne rade ceo projekat već samo sledeće funkcionalnosti:
+- Sve funkcionalnosti za neprijavljenog korisnika
+- Prijavljeni korisnika 2.1, 2.2, 2.6
+- Administrator 3.1, 3.3, 3.4, 3.6
