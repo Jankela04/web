@@ -10,6 +10,7 @@ import com.rastkela.enums.UserRole;
 
 
 @Entity
+@Table(name="users")
 public class User implements Serializable{
 
     @Id
