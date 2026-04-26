@@ -7,6 +7,11 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 @Entity
+@Table(
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {"user_id", "game_id"}
+    )
+)
 public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
