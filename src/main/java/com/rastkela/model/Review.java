@@ -1,18 +1,17 @@
 package com.rastkela.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
-import com.rastkela.enums.ReviewRating;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
 @Entity
 public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 50)
-    private String title;
-    @Column(length = 250)
+    @Column(length = 250, nullable = true)
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,20 +21,18 @@ public class Review implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
-    @Enumerated(EnumType.STRING)
-    private ReviewRating rating;
-
-
+    @Min(1)
+    @Max(5)
+    private int rating;
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {}
+
+
+
 
     public String getDescription() {return description;}
 
@@ -49,11 +46,11 @@ public class Review implements Serializable {
 
     public void setGame(Game game) {this.game = game;}
 
-    public ReviewRating getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(ReviewRating rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
