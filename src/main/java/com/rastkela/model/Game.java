@@ -23,8 +23,9 @@ public class Game implements Serializable {
     @Column
     private String image; // putanja
 
-    @Column
-    private Long categoryId; // TODO anotacija za relaciju
+    @ManyToOne(fetch = FetchType.LAZY) //zamena za id sad kad je kreiran category id
+    @JoinColumn(name = "category_id", nullable = false)
+    private GameCategory category;
 
     @Column
     private LocalDate addedDate;
@@ -52,8 +53,8 @@ public class Game implements Serializable {
         return image;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public GameCategory getCategory() {
+        return category;
     }
 
     public LocalDate getAddedDate() {
@@ -80,8 +81,8 @@ public class Game implements Serializable {
         this.image = image;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(GameCategory category) {
+        this.category = category;
     }
 
     public void setActive(boolean active) {
