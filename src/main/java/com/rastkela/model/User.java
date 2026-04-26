@@ -2,6 +2,7 @@ package com.rastkela.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -45,9 +46,29 @@ public class User implements Serializable{
 
     // TODO: potencijalno polje lastActive
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Session> sessions;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Review>  reviews;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserAchievement>  achievements;
+
     public User() {}
 
-    
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<UserAchievement> getAchievements() {
+        return achievements;
+    }
+
     public Long getId() {
         return id;
     }

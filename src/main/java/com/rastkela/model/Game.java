@@ -2,6 +2,7 @@ package com.rastkela.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -32,6 +33,20 @@ public class Game implements Serializable {
 
     @Column(nullable = false)
     private boolean active;
+
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    private List<Session> sessions;
+
+    @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    private List<Review> reviews;
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
     public Long getId() {
         return id;
