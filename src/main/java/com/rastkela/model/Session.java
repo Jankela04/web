@@ -1,48 +1,49 @@
 package com.rastkela.model;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 @Entity
 
 public class Session implements Serializable {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id")
-        private User user;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "game_id")
-        private Game game;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    private Game game;
 
-        @Column
-        private LocalDate startDate;
-        @Column
-        private LocalDate endDate;
-        @Column
-        private Long durationInSeconds;
+    @Column(nullable = false)
+    private LocalDateTime startedAt;
 
-        public Long getId() {return id;}
+    @Column(nullable = false)
+    private LocalDateTime endedAt;
 
-        public Game getGame() {
-                return game;
-        }
-        public LocalDate getStartDate() {return startDate;}
+    public Game getGame() {
+        return game;
+    }
 
-        public LocalDate getEndDate() {return endDate;}
+    @Transient
+    public Long getDurationInSeconds(){
+        return Duration.between(startedAt, endedAt).getSeconds();
+    }
+    public Long getId() { return this.id;}
 
-        public Long getDurationInSeconds() {return durationInSeconds;}
+    public LocalDateTime getStartDate() {return startedAt;}
 
-        public void setId(Long id) {this.id = id;}
+    public LocalDateTime getEndDate() {return endedAt;}
 
-        public void setGame(Game game) {this.game = game;}
+    public void setId(Long id) {this.id = id;}
 
-        public void setStartDate(LocalDate startDate) {this.startDate = startDate;}
+    public void setGame(Game game) {this.game = game;}
 
-        public void setEndDate(LocalDate endDate) {this.endDate = endDate;}
+    public void setStartDate(LocalDateTime startDate) {this.startedAt = startDate;}
 
-        public void setDurationInSeconds(Long duration) {this.durationInSeconds = duration;}
+    public void setEndDate(LocalDateTime endDate) {this.endedAt = endDate;}
 }

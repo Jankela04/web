@@ -11,6 +11,7 @@ public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 250, nullable = true)
     private String description;
 
@@ -21,18 +22,17 @@ public class Review implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
+
     @Min(1)
     @Max(5)
     private int rating;
+
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-
-
-
 
     public String getDescription() {return description;}
 

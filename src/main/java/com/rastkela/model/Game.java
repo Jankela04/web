@@ -23,7 +23,7 @@ public class Game implements Serializable {
     @Column
     private String image; // putanja
 
-    @ManyToOne(fetch = FetchType.LAZY) //zamena za id sad kad je kreiran category id
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private GameCategory category;
 
