@@ -92,6 +92,10 @@ public class Game implements Serializable {
         this.path = path;
     }
 
+    public void setAddedDate(LocalDate addedDate) {
+        this.addedDate = addedDate;
+    }
+
     public void setImage(String image) {
         this.image = image;
     }
