@@ -11,4 +11,5 @@ public interface GameRepository extends JpaRepository<Game,Long>{
     // za pretragu/filtriranje, mada mislim da je bolje mozda to raditi na frontendu
     List<Game> findByNameContainingIgnoreCase(String name); 
     List<Game> findByCategoryNameContainingIgnoreCase(String name);
+    Long countByActiveTrue();
 }
