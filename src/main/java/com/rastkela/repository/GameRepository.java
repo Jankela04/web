@@ -2,6 +2,8 @@ package com.rastkela.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.rastkela.model.Game;
+import com.rastkela.model.GameCategory;
+
 import java.util.List;
 
 
@@ -12,4 +14,6 @@ public interface GameRepository extends JpaRepository<Game,Long>{
     List<Game> findByNameContainingIgnoreCase(String name); 
     List<Game> findByCategoryNameContainingIgnoreCase(String name);
     Long countByActiveTrue();
+
+    boolean existsByGameCategory(GameCategory category);
 }

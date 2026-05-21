@@ -18,4 +18,32 @@ public class GameCategory implements Serializable{
 
     @OneToMany (mappedBy = "category")
     private List<Game> games;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 }
