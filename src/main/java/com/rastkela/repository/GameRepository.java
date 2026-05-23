@@ -15,5 +15,5 @@ public interface GameRepository extends JpaRepository<Game,Long>{
     List<Game> findByCategoryNameContainingIgnoreCase(String name);
     Long countByActiveTrue();
 
-    boolean existsByGameCategory(GameCategory category);
+    boolean existsByCategory(GameCategory category);
 }

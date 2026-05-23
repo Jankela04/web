@@ -3,6 +3,8 @@ package com.rastkela.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +19,7 @@ public class GameCategory implements Serializable{
     private String description;
 
     @OneToMany (mappedBy = "category")
+    @JsonIgnore
     private List<Game> games;
 
     public Long getId() {

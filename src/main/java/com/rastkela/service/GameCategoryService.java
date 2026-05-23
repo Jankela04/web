@@ -46,7 +46,7 @@ public class GameCategoryService {
     public GameCategory deleteCategory(Long categoryId){
         GameCategory categoryToDelete = categoryRepository.findById(categoryId).orElseThrow();
 
-        if(gameRepository.existsByGameCategory(categoryToDelete)){
+        if(gameRepository.existsByCategory(categoryToDelete)){
             throw new RuntimeException("Nije moguce brisanje kategorije jer sadrzi aktivne igre");
         }
 

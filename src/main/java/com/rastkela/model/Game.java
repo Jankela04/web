@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -35,9 +37,11 @@ public class Game implements Serializable {
     private boolean active;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Session> sessions;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Review> reviews;
 
     public List<Session> getSessions() {
