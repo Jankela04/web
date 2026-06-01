@@ -2,6 +2,7 @@ package com.rastkela.service;
 
 import java.util.List;
 
+import com.rastkela.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class ReviewService {
     @Autowired
     private GameRepository gameRepository;
 
-    // @Autowired TODO: kada Rastko zavrsi userRepository
-    // private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Review> getReviewsByGame(Long gameId){
         return reviewRepository.findByGameId(gameId);
