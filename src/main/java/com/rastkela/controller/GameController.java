@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.dto.game.GameBasicDto;
 import com.rastkela.dto.game.GameDetailDto;
+import com.rastkela.dto.game.GameFormDto;
 import com.rastkela.dto.game.GameResponse;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
@@ -16,8 +17,16 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
+
 
 
 
@@ -77,5 +86,32 @@ public class GameController {
                 reviews
             );
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<Game> createGame(HttpSession session, @RequestBody GameFormDto newGameData) {
+        // boolean isAuthorised = session.getAttribute("user") != null;
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Game newGame = gameService.createGame(newGameData);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Game> updateGame(@RequestBody GameFormDto gameData,@PathVariable Long id, HttpSession session) {
+        // boolean isAuthorised = session.getAttribute("user") != null;
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Game newGame = gameService.updateGame(id, gameData);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+        
     }
 }
