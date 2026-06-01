@@ -1,20 +1,14 @@
 package com.rastkela.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rastkela.dto.home.HomeResponse;
-import com.rastkela.dto.home.game.GameBasicDto;
-import com.rastkela.dto.home.game.GameDetailDto;
+import com.rastkela.dto.HomeResponse;
 import com.rastkela.model.Game;
-import com.rastkela.model.Review;
-import com.rastkela.service.GameCategoryService;
 import com.rastkela.service.GameService;
-import com.rastkela.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
 

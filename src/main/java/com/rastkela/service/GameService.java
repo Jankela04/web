@@ -7,9 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rastkela.dto.GameFormDto;
-import com.rastkela.dto.home.game.GameBasicDto;
-import com.rastkela.dto.home.game.GameDetailDto;
+import com.rastkela.dto.game.GameBasicDto;
+import com.rastkela.dto.game.GameDetailDto;
+import com.rastkela.dto.game.GameFormDto;
 import com.rastkela.model.Game;
 import com.rastkela.model.GameCategory;
 import com.rastkela.model.Review;
