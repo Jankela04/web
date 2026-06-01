@@ -2,10 +2,12 @@ package com.rastkela.dto.home;
 
 import java.util.List;
 
+import com.rastkela.dto.home.game.GameBasicDto;
+
 public class HomeResponse {
     private long playerCount;
     private long gameCount;
-    private List<? extends GameBasic> games;
+    private List<? extends GameBasicDto> games;
 
     public HomeResponse() {
     }
@@ -22,10 +24,10 @@ public class HomeResponse {
     public void setGameCount(long gameCount) {
         this.gameCount = gameCount;
     }
-    public List<? extends GameBasic> getGames() {
+    public List<? extends GameBasicDto> getGames() {
         return games;
     }
-    public void setGames(List<? extends GameBasic> games) {
+    public void setGames(List<? extends GameBasicDto> games) {
         this.games = games;
     }
 }

@@ -1,17 +1,14 @@
-package com.rastkela.dto.home;
+package com.rastkela.dto.home.game;
 
-public class GameDetail extends GameBasic {
+public class GameDetailDto extends GameBasicDto {
     private String imgUrl;
     private String category;
     private double avgScore;
 
-    
-
-    public GameDetail() {
+    public GameDetailDto() {
     }
-
     
-    public GameDetail(Long id, String name, String imgUrl, String category, double avgScore) {
+    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore) {
         super(id, name);
         this.imgUrl = imgUrl;
         this.category = category;

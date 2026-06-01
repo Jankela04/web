@@ -1,13 +1,13 @@
-package com.rastkela.dto.home;
+package com.rastkela.dto.home.game;
 
-public class GameBasic {
+public class GameBasicDto {
     private Long id;
     private String name;
     
-    public GameBasic() {
+    public GameBasicDto() {
     }
 
-    public GameBasic(Long id, String name) {
+    public GameBasicDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }
