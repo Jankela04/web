@@ -3,6 +3,7 @@ package com.rastkela.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.dto.game.GameFormDto;
 import com.rastkela.model.Game;
 import com.rastkela.model.GameCategory;
-import com.rastkela.model.Review;
 import com.rastkela.repository.GameCategoryRepository;
 import com.rastkela.repository.GameRepository;
 
@@ -96,16 +96,16 @@ public class GameService {
 
     public List<GameDetailDto> toDetailDto(List<Game> games) {
         List<GameDetailDto> detailedGames = new ArrayList<>();
-        for (Game game : games) {
-            List<Review> reviews = reviewService.getReviewsByGame(game.getId());
-            double avgScore = reviewService.getAverageScore(reviews);
+        Map<Long,Double> avgScores = reviewService.getAverageScoreMap();
 
+        for (Game game : games) {
             detailedGames.add(new GameDetailDto(
                     game.getId(),
                     game.getName(),
                     game.getImage(),
                     game.getCategory().getName(),
-                    avgScore));
+                    avgScores.getOrDefault(game.getId(), 0.0)
+                ));
         }
         return detailedGames;
     }

@@ -33,8 +33,8 @@ public class HomeController {
 
         List<Game> games = gameService.findAll();
 
-        boolean isLoggedIn = session.getAttribute("user") != null;
-        // boolean isLoggedIn = true;// za testiranje
+        // boolean isLoggedIn = session.getAttribute("user") != null;
+        boolean isLoggedIn = true;// za testiranje
 
         if (isLoggedIn) {
             res.setGames(gameService.toDetailDto(games));

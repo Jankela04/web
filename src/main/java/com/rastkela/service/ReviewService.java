@@ -1,6 +1,8 @@
 package com.rastkela.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,15 @@ public class ReviewService {
             sum+=rev.getRating();
         }
         return (double) sum / reviews.size();
+    }
+
+    public Map<Long,Double> getAverageScoreMap(){
+        return reviewRepository.findAverageScores()
+        .stream()
+        .collect(Collectors.toMap(
+                row -> (Long) row[0],
+                row -> (Double) row[1]
+        ));
     }
 
     public Review createReview(CreateReviewDto reviewDto){
