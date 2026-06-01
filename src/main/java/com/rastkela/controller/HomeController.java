@@ -31,7 +31,7 @@ public class HomeController {
         res.setGameCount(gameService.countActiveGames());
         // stats.setPlayerCount(userService.countRegisteredUsers());
 
-        List<Game> games = gameService.findAll();
+        List<Game> games = gameService.findAllActive();
 
         // boolean isLoggedIn = session.getAttribute("user") != null;
         boolean isLoggedIn = true;// za testiranje

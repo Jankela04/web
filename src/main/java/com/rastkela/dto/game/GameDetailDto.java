@@ -10,25 +10,31 @@ public class GameDetailDto extends GameBasicDto {
     private double avgScore;
     private String gameUrl;
     private List<Review> reviews;
+    boolean active;
+    private String description;
 
     public GameDetailDto() {
     }
 
-    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl, List<Review> reviews) {
+    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl, List<Review> reviews, boolean active, String description) {
         super(id, name);
         this.imgUrl = imgUrl;
         this.category = category;
         this.avgScore = avgScore;
         this.gameUrl = gameUrl;
         this.reviews = reviews;
+        this.active = active;
+        this.description = description;
     }
 
-    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl) {
+    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl, boolean active,String description) {
         super(id, name);
         this.imgUrl = imgUrl;
         this.category = category;
         this.avgScore = avgScore;
         this.gameUrl = gameUrl;
+        this.active = active;
+        this.description = description;
     }
     public String getImgUrl() {
         return imgUrl;
@@ -69,5 +75,20 @@ public class GameDetailDto extends GameBasicDto {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-     
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean activated) {
+        this.active = activated;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

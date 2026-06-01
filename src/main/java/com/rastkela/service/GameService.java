@@ -32,6 +32,10 @@ public class GameService {
         return gameRepository.findAll();
     }
 
+    public List<Game> findAllActive() {
+        return gameRepository.findByActiveTrue();
+    }
+
     public Game findOne(Long id) {
         return gameRepository.findById(id).orElseThrow();
     }
@@ -105,7 +109,9 @@ public class GameService {
                     game.getImage(),
                     game.getCategory().getName(),
                     avgScores.getOrDefault(game.getId(), 0.0),
-                    game.getPath()
+                    game.getPath(),
+                    game.isActive(),
+                    game.getDescription()
                 ));
         }
         return detailedGames;

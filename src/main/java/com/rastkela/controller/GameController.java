@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +46,7 @@ public class GameController {
         // boolean isLoggedIn = session.getAttribute("user") != null;
         boolean isLoggedIn = true;// za testiranje
 
-        List<Game> games = gameService.findAll();
+        List<Game> games = gameService.findAllActive();
 
         if (isLoggedIn) {
             res = gameService.toDetailDto(games);
@@ -77,7 +76,9 @@ public class GameController {
                 game.getCategory().getName(),
                 avgScore,
                 game.getPath(),
-                reviews
+                reviews,
+                game.isActive(),
+                game.getDescription()
             );
         } else{
             return new GameBasicDto(
