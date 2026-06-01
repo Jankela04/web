@@ -104,7 +104,8 @@ public class GameService {
                     game.getName(),
                     game.getImage(),
                     game.getCategory().getName(),
-                    avgScores.getOrDefault(game.getId(), 0.0)
+                    avgScores.getOrDefault(game.getId(), 0.0),
+                    game.getPath()
                 ));
         }
         return detailedGames;
