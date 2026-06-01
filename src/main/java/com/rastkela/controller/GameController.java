@@ -113,6 +113,43 @@ public class GameController {
         Game newGame = gameService.updateGame(id, gameData);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+    }
+
+    @PostMapping("/{id}/activate")
+    public ResponseEntity<String> activateGame(@PathVariable Long id, HttpSession session) {
+        // boolean isAuthorised = session.getAttribute("user") != null;
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Game game = gameService.findOne(id);
+
+        if(game.isActive()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game is already active");
+        } 
         
+        gameService.activateGame(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+    
+    @PostMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateGame(@PathVariable Long id, HttpSession session) {
+        // boolean isAuthorised = session.getAttribute("user") != null;
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Game game = gameService.findOne(id);
+
+        if(!game.isActive()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game is already not active");
+        } 
+        
+        gameService.deactivateGame(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 }
