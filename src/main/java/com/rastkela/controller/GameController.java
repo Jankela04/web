@@ -58,8 +58,14 @@ public class GameController {
         List<Review> reviews = reviewService.getReviewsByGame(id);
         double avgScore = reviewService.getAverageScore(reviews);
 
-        if(isLoggedIn){
-            return new GameDetailDto(
+        if(!isLoggedIn || !game.isActive()){
+            return new GameBasicDto(
+                game.getId(),
+                game.getName(),
+                reviews
+            );
+        }
+        return new GameDetailDto(
                 game.getId(),
                 game.getName(),
                 game.getImage(),
@@ -68,15 +74,7 @@ public class GameController {
                 game.getPath(),
                 reviews,
                 game.isActive(),
-                game.getDescription()
-            );
-        } else{
-            return new GameBasicDto(
-                game.getId(),
-                game.getName(),
-                reviews
-            );
-        }
+                game.getDescription());
     }
 
     @PostMapping
