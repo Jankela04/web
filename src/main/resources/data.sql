@@ -9,14 +9,14 @@ INSERT INTO users (username, email, password, birth_date, registration_date, rol
 
 
 
-INSERT into GAME_CATEGORY (id, name, description)
-values (1, 'Rougelike', 'procedurally generated levels where every run is different while having permanent death');
+INSERT into GAME_CATEGORY (name, description)
+values ('Rougelike', 'procedurally generated levels where every run is different while having permanent death');
 
-INSERT into GAME_CATEGORY (id, name, description)
-values (2, 'RPG', 'Role playing game where player is playing a role bla bla');
+INSERT into GAME_CATEGORY (name, description)
+values ('RPG', 'Role playing game where player is playing a role bla bla');
 
-INSERT into GAME_CATEGORY (id, name, description)
-values (3, 'First-Person shooter', 'Action games with shooting elements played in first perspective');
+INSERT into GAME_CATEGORY (name, description)
+values ('First-Person shooter', 'Action games with shooting elements played in first perspective');
 
 
 

@@ -54,4 +54,8 @@ public class GameCategoryService {
 
         return categoryToDelete;
     }
+
+    public boolean existsByName(String name){
+        return categoryRepository.existsByName(name);
+    }
 }
