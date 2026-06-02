@@ -25,12 +25,13 @@ public class AuthService {
 
     public UserSession login(LoginDto loginDto){
         User user = userService.findByUsername(loginDto.getUsername());
-        if(user.isBlocked())
-            throw new UnauthorizedException("User is banned");
 
         if(user == null ||
         !passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
         throw new UnauthorizedException("Wrong login credentials");
+
+        if(user.isBlocked())
+            throw new UnauthorizedException("User is banned");
 
         return new UserSession(user.getId(),user.getUsername(),user.getEmail(),user.getRole());
     }

@@ -15,6 +15,7 @@ import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
+import com.rastkela.model.User;
 import com.rastkela.repository.GameRepository;
 import com.rastkela.repository.ReviewRepository;
 
@@ -92,12 +93,12 @@ public class ReviewService {
 
         Game game = gameRepository.findById(reviewDto.getGameId())
             .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
-        // User user = userRepository.findById(reviewDto.getUserId())
-            // .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findById(reviewDto.getUserId())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         newReview.setRating(reviewDto.getRating());
         newReview.setGame(game);
-        // newReview.setUser(user);
+        newReview.setUser(user);
         if(reviewDto.getDescription().isPresent())
             newReview.setDescription(reviewDto.getDescription().get());
 
