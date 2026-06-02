@@ -34,7 +34,7 @@ public class GameCategoryController {
 
     @GetMapping
     public ResponseEntity<List<GameCategory>> getAllCategories(HttpSession session) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
+        //boolean isAuthorised = session.getAttribute("user").isAdmin();
         boolean isAuthorised = true;
 
         if(!isAuthorised){
