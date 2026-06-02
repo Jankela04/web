@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.GameCategory;
 import com.rastkela.repository.GameCategoryRepository;
 import com.rastkela.repository.GameRepository;
@@ -23,7 +24,8 @@ public class GameCategoryService {
     }
 
     public GameCategory findOne(Long categoryId){
-        return categoryRepository.findById(categoryId).orElseThrow();
+        return categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     public GameCategory createCategory(String name, String description){
@@ -37,14 +39,16 @@ public class GameCategoryService {
     
 
     public GameCategory changeCategoryName(Long categoryId, String newName){
-        GameCategory newCategory = categoryRepository.findById(categoryId).orElseThrow();
-        newCategory.setName(newName);
+        GameCategory newCategory = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
+        newCategory.setName(newName);
         return categoryRepository.save(newCategory);
     }
 
     public GameCategory deleteCategory(Long categoryId){
-        GameCategory categoryToDelete = categoryRepository.findById(categoryId).orElseThrow();
+        GameCategory categoryToDelete = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         if(gameRepository.existsByCategory(categoryToDelete)){
             throw new RuntimeException("Nije moguce brisanje kategorije jer sadrzi aktivne igre");

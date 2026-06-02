@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.rastkela.dto.game.GameBasicDto;
 import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.dto.game.GameFormDto;
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.Game;
 import com.rastkela.model.GameCategory;
 import com.rastkela.repository.GameCategoryRepository;
@@ -37,11 +38,13 @@ public class GameService {
     }
 
     public Game findOne(Long id) {
-        return gameRepository.findById(id).orElseThrow();
+        return gameRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
     }
 
     public Game updateGame(Long gameId, GameFormDto gameFormDto) {
-        Game game = gameRepository.findById(gameId).orElseThrow(); // ne bi trebalo da baci izuzetak
+        Game game = gameRepository.findById(gameId)
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
 
         game.setName(gameFormDto.getName());
         game.setDescription(gameFormDto.getDescription());
@@ -49,9 +52,9 @@ public class GameService {
         game.setImage(gameFormDto.getImagePath());
         game.setActive(gameFormDto.isActive());
 
-        GameCategory category = categoryRepository.findById(gameFormDto.getCategoryId()).orElseThrow(); // mada nikad ne
-                                                                                                        // bi trebalo da
-                                                                                                        // baci izuzetak
+        GameCategory category = categoryRepository.findById(gameFormDto.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
         game.setCategory(category);
 
         return gameRepository.save(game);
@@ -66,9 +69,10 @@ public class GameService {
         newGame.setAddedDate(LocalDate.now());
         newGame.setActive(gameFormDto.isActive());
 
-        GameCategory category = categoryRepository.findById(gameFormDto.getCategoryId()).orElseThrow(); // mada nikad ne
-                                                                                                        // bi trebalo da
-                                                                                                        // baci izuzetak
+        GameCategory category = categoryRepository.findById(gameFormDto.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+                                                                                                        
         newGame.setCategory(category);
 
         return gameRepository.save(newGame);
@@ -79,13 +83,15 @@ public class GameService {
     }
 
     public void activateGame(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow();
+        Game game = gameRepository.findById(gameId)
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
         game.setActive(true);
         gameRepository.save(game);
     }
 
     public void deactivateGame(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow();
+        Game game = gameRepository.findById(gameId)
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
         game.setActive(false);
         gameRepository.save(game);
     }
