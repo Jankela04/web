@@ -34,7 +34,6 @@ public class GameController {
     @GetMapping
     public List<? extends GameBasicDto> getAllGames(HttpSession session) {
         boolean isLoggedIn = authService.isLoggedIn(session);
-        // boolean isLoggedIn = true;// za testiranje
 
         List<? extends GameBasicDto> res;
 
@@ -52,7 +51,6 @@ public class GameController {
     @GetMapping("/{id}")
     public GameResponse getGameById(@PathVariable Long id, HttpSession session) {
         boolean isLoggedIn = authService.isLoggedIn(session);
-        // boolean isLoggedIn = true;// za testiranje
 
         Game game = gameService.findOne(id);
 
@@ -82,8 +80,7 @@ public class GameController {
 
     @PostMapping
     public ResponseEntity<Game> createGame(HttpSession session, @RequestBody GameFormDto newGameData) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -95,8 +92,7 @@ public class GameController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Game> updateGame(@RequestBody GameFormDto gameData,@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -108,8 +104,7 @@ public class GameController {
 
     @PostMapping("/{id}/activate")
     public ResponseEntity<String> activateGame(@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -127,8 +122,7 @@ public class GameController {
     
     @PostMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateGame(@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
