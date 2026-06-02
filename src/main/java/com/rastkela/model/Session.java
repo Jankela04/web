@@ -22,7 +22,7 @@ public class Session implements Serializable {
     @Column(nullable = false)
     private LocalDateTime startedAt;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime endedAt;
 
     public Game getGame() {
@@ -46,4 +46,11 @@ public class Session implements Serializable {
     public void setStartDate(LocalDateTime startDate) {this.startedAt = startDate;}
 
     public void setEndDate(LocalDateTime endDate) {this.endedAt = endDate;}
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
