@@ -19,4 +19,16 @@ public class Achievement implements Serializable {
 
     @Column
     private String condition;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
 }
