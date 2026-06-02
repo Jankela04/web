@@ -55,6 +55,11 @@ public class ReviewService {
         if(reviewRepository.existsByGameIdAndUserId(reviewDto.getGameId(), reviewDto.getUserId())){
             throw new RuntimeException("Recenzija od tog korisnika za tu igricu vec postoji");
         }
+        int rating = reviewDto.getRating();
+
+        if(rating >= 6 || rating <= 0){
+            throw new RuntimeException("Rating mora biti izmedju 1 i 5");
+        }
 
         Review newReview = new Review();
 
