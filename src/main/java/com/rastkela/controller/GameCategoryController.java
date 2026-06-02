@@ -14,9 +14,13 @@ import com.rastkela.service.GameCategoryService;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+
 
 
 
@@ -65,8 +69,36 @@ public class GameCategoryController {
         if(categoryService.existsByName(name)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+        GameCategory newCategory = categoryService.createCategory(name, description);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(name, description));
+        return ResponseEntity.status(HttpStatus.CREATED).body(newCategory);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<GameCategory> updateCategoryName(HttpSession session, @PathVariable Long id, @RequestParam String name) {
+        // boolean isAuthorised = session.getAttribute("user").isAdmin();
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        GameCategory updatedCategory = categoryService.changeCategoryName(id, name);
+        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCategory);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GameCategory> removeCategory(HttpSession session, @PathVariable Long id) {
+        // boolean isAuthorised = session.getAttribute("user").isAdmin();
+        boolean isAuthorised = true;
+
+        if(!isAuthorised){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        GameCategory deletedCategory = categoryService.deleteCategory(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(deletedCategory);
     }
     
     
