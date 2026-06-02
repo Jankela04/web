@@ -2,6 +2,7 @@ package com.rastkela.service;
 
 import com.rastkela.model.UserAchievement;
 import com.rastkela.repository.UserAchievementRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,8 @@ public class UserAchievementService {
     private UserAchievementRepository userAchievementRepository;
 
     public UserAchievement findOne(Long id) {
-        return userAchievementRepository.findById(id).orElseThrow();
+        return userAchievementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("UserAchievement not found"));
     }
 
     public List<UserAchievement> findAll() {
