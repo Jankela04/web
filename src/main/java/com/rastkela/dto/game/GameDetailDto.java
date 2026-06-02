@@ -2,6 +2,7 @@ package com.rastkela.dto.game;
 
 import java.util.List;
 
+import com.rastkela.dto.ReviewResponseDto;
 import com.rastkela.model.Review;
 
 public class GameDetailDto extends GameBasicDto {
@@ -9,20 +10,18 @@ public class GameDetailDto extends GameBasicDto {
     private String category;
     private double avgScore;
     private String gameUrl;
-    private List<Review> reviews;
     boolean active;
     private String description;
 
     public GameDetailDto() {
     }
 
-    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl, List<Review> reviews, boolean active, String description) {
-        super(id, name);
+    public GameDetailDto(Long id, String name, String imgUrl, String category, double avgScore, String gameUrl, List<ReviewResponseDto> reviews, boolean active, String description) {
+        super(id, name,reviews);
         this.imgUrl = imgUrl;
         this.category = category;
         this.avgScore = avgScore;
         this.gameUrl = gameUrl;
-        this.reviews = reviews;
         this.active = active;
         this.description = description;
     }
@@ -66,14 +65,6 @@ public class GameDetailDto extends GameBasicDto {
 
     public void setGameUrl(String gameUrl) {
         this.gameUrl = gameUrl;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public boolean isActive() {

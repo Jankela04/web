@@ -1,5 +1,6 @@
 package com.rastkela.controller;
 
+import com.rastkela.dto.ReviewResponseDto;
 import com.rastkela.dto.game.GameBasicDto;
 import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.dto.game.GameFormDto;
@@ -58,11 +59,13 @@ public class GameController {
         List<Review> reviews = reviewService.getReviewsByGame(id);
         double avgScore = reviewService.getAverageScore(reviews);
 
+        List<ReviewResponseDto> reviewsDto = reviews.stream().map(review -> ReviewService.toDto(review)).toList();
+
         if(!isLoggedIn || !game.isActive()){
             return new GameBasicDto(
                 game.getId(),
                 game.getName(),
-                reviews
+                reviewsDto
             );
         }
         return new GameDetailDto(
@@ -72,7 +75,7 @@ public class GameController {
                 game.getCategory().getName(),
                 avgScore,
                 game.getPath(),
-                reviews,
+                reviewsDto,
                 game.isActive(),
                 game.getDescription());
     }
