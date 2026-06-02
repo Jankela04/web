@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rastkela.dto.CreateReviewDto;
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
 import com.rastkela.repository.GameRepository;
@@ -64,8 +65,10 @@ public class ReviewService {
 
         Review newReview = new Review();
 
-        Game game = gameRepository.findById(reviewDto.getGameId()).orElseThrow();
-        // User user = userRepository.findById(reviewDto.getUserId()).orElseThrow();
+        Game game = gameRepository.findById(reviewDto.getGameId())
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+        // User user = userRepository.findById(reviewDto.getUserId())
+            // .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         newReview.setRating(reviewDto.getRating());
         newReview.setGame(game);

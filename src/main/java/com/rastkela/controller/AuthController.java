@@ -29,9 +29,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password is blank");
 
         UserSession userSession = authService.login(logindata);
-        if(userSession == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User does not exist");
-        }
 
         session.setAttribute("user", userSession);
 

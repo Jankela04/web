@@ -3,6 +3,7 @@ package com.rastkela.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.Achievement;
 import com.rastkela.repository.AchievementRepository;
 
@@ -13,7 +14,9 @@ public class AchievementService {
     private AchievementRepository achievementRepository;
 
     public Achievement findOne(Long achievementId){
-        return achievementRepository.findById(achievementId).orElseThrow();
+        return achievementRepository.findById(achievementId)
+            .orElseThrow(()->
+                new ResourceNotFoundException("Achievement not found"));
     }
     
 }
