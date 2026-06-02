@@ -45,6 +45,10 @@ public class UserService {
         return UserDTO.fromEntity(savedUser);
     }
 
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
     public UserDTO updateProfile(
             Long id,
             String username,
