@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.dto.HomeResponse;
 import com.rastkela.model.Game;
+import com.rastkela.service.AuthService;
 import com.rastkela.service.GameService;
 
 import jakarta.servlet.http.HttpSession;
@@ -21,11 +22,17 @@ public class HomeController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private AuthService authService;
+
     // @Autowired TODO: kada Rastko zavrsi
     // private UserService userService;
 
     @GetMapping
     public HomeResponse getHomeStats(HttpSession session) {
+        // boolean isLoggedIn = authService.isLoggedIn(session);
+        boolean isLoggedIn = true;// za testiranje
+
         HomeResponse res = new HomeResponse();
 
         res.setGameCount(gameService.countActiveGames());
@@ -33,8 +40,6 @@ public class HomeController {
 
         List<Game> games = gameService.findAllActive();
 
-        // boolean isLoggedIn = session.getAttribute("user") != null;
-        boolean isLoggedIn = true;// za testiranje
 
         if (isLoggedIn) {
             res.setGames(gameService.toDetailDto(games));
