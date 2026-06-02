@@ -11,6 +11,8 @@ import com.rastkela.dto.UserSession;
 import com.rastkela.enums.UserRole;
 import com.rastkela.model.User;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class AuthService {
 
@@ -43,6 +45,19 @@ public class AuthService {
 
         UserDTO newUser = userService.create(user);
         return newUser;
+    }
+
+    public boolean isLoggedIn(HttpSession session){
+        return session.getAttribute("user") != null;
+    }
+
+    public UserSession getCurrentUser(HttpSession session){
+        return (UserSession) session.getAttribute("user");
+    }
+
+    public boolean isAdmin(HttpSession session) {
+        UserSession user = getCurrentUser(session);
+        return user.isAdmin();
     }
 
 }

@@ -27,7 +27,7 @@ public class User implements Serializable{
     private String email;
 
     @Column(nullable = false)
-    private String password; // TODO: lozinka treba biti hesirana
+    private String password;
 
     @Column
     private LocalDate birthDate;
