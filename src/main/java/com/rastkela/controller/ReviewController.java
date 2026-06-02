@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.dto.CreateReviewDto;
+import com.rastkela.dto.UserSession;
 import com.rastkela.model.Review;
+import com.rastkela.service.AuthService;
 import com.rastkela.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,9 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private AuthService authService;
+
     @GetMapping
     public ResponseEntity<List<Review>> getReiviews(
         @RequestParam(required = false) Long userId,
@@ -45,10 +50,9 @@ public class ReviewController {
 
     @PostMapping
     public ResponseEntity<Review> createReview(HttpSession session, @RequestBody CreateReviewDto reviewForm) {
-        // boolean isAuthorised = session.getAttribute("user").getId() == reviewForm.getUserId();
-        boolean isAuthorised = true;
+        UserSession user = (UserSession) authService.getCurrentUser(session);
 
-        if(!isAuthorised){
+        if(!(user.getId()==reviewForm.getUserId())){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Review newReview = reviewService.createReview(reviewForm);

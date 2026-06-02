@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.model.GameCategory;
+import com.rastkela.service.AuthService;
 import com.rastkela.service.GameCategoryService;
 
 import jakarta.servlet.http.HttpSession;
@@ -20,11 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-
-
-
 @RequestMapping("/api/category")
 @RestController
 public class GameCategoryController {
@@ -32,12 +28,15 @@ public class GameCategoryController {
     @Autowired
     private GameCategoryService categoryService;
 
+    @Autowired
+    private AuthService authService;
+
     @GetMapping
     public ResponseEntity<List<GameCategory>> getAllCategories(HttpSession session) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
-        boolean isAuthorised = true;
+        // boolean isLoggedIn = authService.isLoggedIn(session);
+        boolean isLoggedIn = true;
 
-        if(!isAuthorised){
+        if(!isLoggedIn){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
@@ -46,10 +45,10 @@ public class GameCategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GameCategory> getCategory(@PathVariable Long id) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
-        boolean isAuthorised = true;
+        // boolean isLoggedIn = authService.isLoggedIn(session);
+        boolean isLoggedIn = true;
 
-        if(!isAuthorised){
+        if(!isLoggedIn){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(categoryService.findOne(id));
@@ -58,11 +57,10 @@ public class GameCategoryController {
     
     @PostMapping
     public ResponseEntity<GameCategory> createCategory(HttpSession session, @RequestParam String name, @RequestParam String description) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
-        boolean isAuthorised = true;
+        // boolean isAdmin = authService.isAdmin(session);
+        boolean isAdmin = true;
 
-
-        if(!isAuthorised){
+        if(!isAdmin){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
@@ -76,10 +74,10 @@ public class GameCategoryController {
     
     @PutMapping("/{id}")
     public ResponseEntity<GameCategory> updateCategoryName(HttpSession session, @PathVariable Long id, @RequestParam String name) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
-        boolean isAuthorised = true;
+        // boolean isAdmin = authService.isAdmin(session);
+        boolean isAdmin = true;
 
-        if(!isAuthorised){
+        if(!isAdmin){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
@@ -89,10 +87,10 @@ public class GameCategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GameCategory> removeCategory(HttpSession session, @PathVariable Long id) {
-        // boolean isAuthorised = session.getAttribute("user").isAdmin();
-        boolean isAuthorised = true;
+        // boolean isAdmin = authService.isAdmin(session);
+        boolean isAdmin = true;
 
-        if(!isAuthorised){
+        if(!isAdmin){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
