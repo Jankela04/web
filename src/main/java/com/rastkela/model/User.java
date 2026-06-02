@@ -128,4 +128,5 @@ public class User implements Serializable{
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
     }
+    public void setRegistrationDate(LocalDate date) { this.registrationDate = date; }
 }
