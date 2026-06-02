@@ -105,4 +105,10 @@ public class SessionService {
 
         return dto;
     }
+    public List<SessionDTO> findByUser(Long userId) {
+        return sessionRepository.findByUserId(userId)
+                .stream()
+                .map(SessionDTO::fromEntity)
+                .toList();
+    }
 }
