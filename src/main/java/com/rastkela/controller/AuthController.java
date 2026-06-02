@@ -3,6 +3,8 @@ package com.rastkela.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.dto.LoginDto;
+import com.rastkela.dto.RegisterDto;
+import com.rastkela.dto.UserDTO;
 import com.rastkela.dto.UserSession;
 import com.rastkela.service.AuthService;
 
@@ -36,5 +38,25 @@ public class AuthController {
         return ResponseEntity.ok("Successfully logged in!");
     }
     
-    
+    @PostMapping("/api/register")
+    public ResponseEntity<String> register(@RequestBody RegisterDto registerData) {
+        UserDTO newUser = authService.register(registerData);
+        if(newUser == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Successfully registered");
+    }
+
+    @PostMapping("/api/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        UserSession userSession = (UserSession) session.getAttribute("user");
+
+        if(userSession == null){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden");
+        }
+        session.invalidate();
+        
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully logged out");
+    }
 }

@@ -129,4 +129,28 @@ public class User implements Serializable{
         this.blocked = blocked;
     }
     public void setRegistrationDate(LocalDate date) { this.registrationDate = date; }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setAchievements(List<UserAchievement> achievements) {
+        this.achievements = achievements;
+    }
 }
