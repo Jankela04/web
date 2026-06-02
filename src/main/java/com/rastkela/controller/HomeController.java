@@ -30,8 +30,7 @@ public class HomeController {
 
     @GetMapping
     public HomeResponse getHomeStats(HttpSession session) {
-        // boolean isLoggedIn = authService.isLoggedIn(session);
-        boolean isLoggedIn = true;// za testiranje
+        boolean isLoggedIn = authService.isLoggedIn(session);
 
         HomeResponse res = new HomeResponse();
 

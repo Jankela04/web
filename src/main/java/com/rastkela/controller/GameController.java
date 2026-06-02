@@ -1,9 +1,11 @@
 package com.rastkela.controller;
 
+import com.rastkela.dto.ReviewResponseDto;
 import com.rastkela.dto.game.GameBasicDto;
 import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.dto.game.GameFormDto;
 import com.rastkela.dto.game.GameResponse;
+import com.rastkela.exception.ForbiddenException;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
 import com.rastkela.service.AuthService;
@@ -34,7 +36,6 @@ public class GameController {
     @GetMapping
     public List<? extends GameBasicDto> getAllGames(HttpSession session) {
         boolean isLoggedIn = authService.isLoggedIn(session);
-        // boolean isLoggedIn = true;// za testiranje
 
         List<? extends GameBasicDto> res;
 
@@ -52,41 +53,39 @@ public class GameController {
     @GetMapping("/{id}")
     public GameResponse getGameById(@PathVariable Long id, HttpSession session) {
         boolean isLoggedIn = authService.isLoggedIn(session);
-        // boolean isLoggedIn = true;// za testiranje
 
         Game game = gameService.findOne(id);
 
         List<Review> reviews = reviewService.getReviewsByGame(id);
         double avgScore = reviewService.getAverageScore(reviews);
 
-        if(isLoggedIn){
-            return new GameDetailDto(
+        List<ReviewResponseDto> reviewsDto = reviews.stream().map(review -> ReviewService.toDto(review)).toList();
+
+        if(!isLoggedIn || !game.isActive()){
+            return new GameBasicDto(
+                game.getId(),
+                game.getName(),
+                reviewsDto
+            );
+        }
+        return new GameDetailDto(
                 game.getId(),
                 game.getName(),
                 game.getImage(),
                 game.getCategory().getName(),
                 avgScore,
                 game.getPath(),
-                reviews,
+                reviewsDto,
                 game.isActive(),
-                game.getDescription()
-            );
-        } else{
-            return new GameBasicDto(
-                game.getId(),
-                game.getName(),
-                reviews
-            );
-        }
+                game.getDescription());
     }
 
     @PostMapping
     public ResponseEntity<Game> createGame(HttpSession session, @RequestBody GameFormDto newGameData) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
         Game newGame = gameService.createGame(newGameData);
 
@@ -95,11 +94,10 @@ public class GameController {
     
     @PutMapping("/{id}")
     public ResponseEntity<Game> updateGame(@RequestBody GameFormDto gameData,@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
         Game newGame = gameService.updateGame(id, gameData);
 
@@ -108,11 +106,10 @@ public class GameController {
 
     @PostMapping("/{id}/activate")
     public ResponseEntity<String> activateGame(@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
 
         Game game = gameService.findOne(id);
@@ -127,11 +124,10 @@ public class GameController {
     
     @PostMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateGame(@PathVariable Long id, HttpSession session) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
 
         Game game = gameService.findOne(id);

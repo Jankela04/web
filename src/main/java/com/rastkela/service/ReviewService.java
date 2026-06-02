@@ -9,8 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rastkela.dto.CreateReviewDto;
+import com.rastkela.dto.ReviewResponseDto;
+import com.rastkela.dto.UserDTO;
+import com.rastkela.dto.game.GameDetailDto;
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
+import com.rastkela.model.User;
 import com.rastkela.repository.GameRepository;
 import com.rastkela.repository.ReviewRepository;
 
@@ -34,6 +39,28 @@ public class ReviewService {
         return reviewRepository.findByUserId(userId);
     }
 
+    public static ReviewResponseDto toDto(Review review){
+        UserDTO userDto = UserDTO.fromEntity(review.getUser());
+        Game game = review.getGame();
+        GameDetailDto gameDto = new GameDetailDto(
+            game.getId(),
+            game.getName(),
+            game.getImage(),
+            game.getCategory().getName(),
+            0,
+            game.getPath(),
+            game.isActive(),
+            game.getDescription()
+        );
+
+        return new ReviewResponseDto(
+            review.getId(),
+            review.getDescription(),
+            review.getRating(),
+            userDto,
+            gameDto
+        );
+    }
 
     public double getAverageScore(List<Review> reviews){
         long sum = 0;
@@ -64,12 +91,14 @@ public class ReviewService {
 
         Review newReview = new Review();
 
-        Game game = gameRepository.findById(reviewDto.getGameId()).orElseThrow();
-        // User user = userRepository.findById(reviewDto.getUserId()).orElseThrow();
+        Game game = gameRepository.findById(reviewDto.getGameId())
+            .orElseThrow(() -> new ResourceNotFoundException("Game not found"));
+        User user = userRepository.findById(reviewDto.getUserId())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         newReview.setRating(reviewDto.getRating());
         newReview.setGame(game);
-        // newReview.setUser(user);
+        newReview.setUser(user);
         if(reviewDto.getDescription().isPresent())
             newReview.setDescription(reviewDto.getDescription().get());
 

@@ -9,6 +9,7 @@ import com.rastkela.dto.RegisterDto;
 import com.rastkela.dto.UserDTO;
 import com.rastkela.dto.UserSession;
 import com.rastkela.enums.UserRole;
+import com.rastkela.exception.UnauthorizedException;
 import com.rastkela.model.User;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,11 +25,13 @@ public class AuthService {
 
     public UserSession login(LoginDto loginDto){
         User user = userService.findByUsername(loginDto.getUsername());
-        if(user == null)
-            return null;
 
-        if(!passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
-            return null;
+        if(user == null ||
+        !passwordEncoder.matches(loginDto.getPassword(), user.getPassword()))
+        throw new UnauthorizedException("Wrong login credentials");
+
+        if(user.isBlocked())
+            throw new UnauthorizedException("User is banned");
 
         return new UserSession(user.getId(),user.getUsername(),user.getEmail(),user.getRole());
     }
@@ -57,7 +60,7 @@ public class AuthService {
 
     public boolean isAdmin(HttpSession session) {
         UserSession user = getCurrentUser(session);
-        return user.isAdmin();
+        return user!= null && user.isAdmin();
     }
 
 }

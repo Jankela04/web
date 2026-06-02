@@ -1,6 +1,7 @@
 package com.rastkela.service;
 
 import com.rastkela.dto.UserDTO;
+import com.rastkela.exception.ResourceNotFoundException;
 import com.rastkela.model.User;
 import com.rastkela.repository.UserRepository;
 
@@ -18,7 +19,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserDTO findOne(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         return UserDTO.fromEntity(user);
     }
 
@@ -55,7 +58,8 @@ public class UserService {
             String email,
             String profilePicture) {
 
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (username != null) {
             user.setUsername(username);
@@ -75,7 +79,8 @@ public class UserService {
     }
 
     public UserDTO block(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setBlocked(true);
 
@@ -83,7 +88,8 @@ public class UserService {
     }
 
     public UserDTO unblock(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setBlocked(false);
 

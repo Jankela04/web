@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rastkela.exception.ForbiddenException;
+import com.rastkela.exception.UnauthorizedException;
 import com.rastkela.model.GameCategory;
 import com.rastkela.service.AuthService;
 import com.rastkela.service.GameCategoryService;
@@ -33,23 +35,21 @@ public class GameCategoryController {
 
     @GetMapping
     public ResponseEntity<List<GameCategory>> getAllCategories(HttpSession session) {
-        // boolean isLoggedIn = authService.isLoggedIn(session);
-        boolean isLoggedIn = true;
+        boolean isLoggedIn = authService.isLoggedIn(session);
 
         if(!isLoggedIn){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new UnauthorizedException("You must be logged in");
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameCategory> getCategory(@PathVariable Long id) {
-        // boolean isLoggedIn = authService.isLoggedIn(session);
-        boolean isLoggedIn = true;
+    public ResponseEntity<GameCategory> getCategory(@PathVariable Long id, HttpSession session) {
+        boolean isLoggedIn = authService.isLoggedIn(session);
 
         if(!isLoggedIn){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new UnauthorizedException("You must be logged in");
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(categoryService.findOne(id));
         }
@@ -57,11 +57,10 @@ public class GameCategoryController {
     
     @PostMapping
     public ResponseEntity<GameCategory> createCategory(HttpSession session, @RequestParam String name, @RequestParam String description) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ForbiddenException("Admin privileges required");
         }
 
         if(categoryService.existsByName(name)){
@@ -74,11 +73,10 @@ public class GameCategoryController {
     
     @PutMapping("/{id}")
     public ResponseEntity<GameCategory> updateCategoryName(HttpSession session, @PathVariable Long id, @RequestParam String name) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ForbiddenException("Admin privileges required");
         }
 
         GameCategory updatedCategory = categoryService.changeCategoryName(id, name);
@@ -87,11 +85,10 @@ public class GameCategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<GameCategory> removeCategory(HttpSession session, @PathVariable Long id) {
-        // boolean isAdmin = authService.isAdmin(session);
-        boolean isAdmin = true;
+        boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ForbiddenException("Admin privileges required");
         }
 
         GameCategory deletedCategory = categoryService.deleteCategory(id);

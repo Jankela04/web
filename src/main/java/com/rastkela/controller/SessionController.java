@@ -21,8 +21,6 @@ public class SessionController {
     @Autowired
     private SessionService sessionService;
 
-    @Autowired
-    private UserService userService;
 
     @GetMapping
     public ResponseEntity<List<SessionDTO>> getAllSessions(HttpSession session) {

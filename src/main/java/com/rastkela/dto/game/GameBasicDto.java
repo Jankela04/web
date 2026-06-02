@@ -1,17 +1,17 @@
 package com.rastkela.dto.game;
-import com.rastkela.model.Review;
+import com.rastkela.dto.ReviewResponseDto;
 
 import java.util.List;
 
 public class GameBasicDto implements GameResponse {
     private Long id;
     private String name;
-    private List<Review> reviews;
+    private List<ReviewResponseDto> reviews;
 
     public GameBasicDto() {
     }
 
-    public GameBasicDto(Long id, String name, List<Review> reviews) {
+    public GameBasicDto(Long id, String name, List<ReviewResponseDto> reviews) {
         this.id = id;
         this.name = name;
         this.reviews = reviews;
@@ -38,11 +38,11 @@ public class GameBasicDto implements GameResponse {
         this.name = name;
     }
 
-    public List<Review> getReviews() {
+    public List<ReviewResponseDto> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ReviewResponseDto> reviews) {
         this.reviews = reviews;
     }
 }
