@@ -1,6 +1,8 @@
 package com.rastkela.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.rastkela.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,23 @@ public class ReviewService {
         return (double) sum / reviews.size();
     }
 
+    public Map<Long,Double> getAverageScoreMap(){
+        return reviewRepository.findAverageScores()
+        .stream()
+        .collect(Collectors.toMap(
+                row -> (Long) row[0],
+                row -> (Double) row[1]
+        ));
+    }
+
     public Review createReview(CreateReviewDto reviewDto){
         if(reviewRepository.existsByGameIdAndUserId(reviewDto.getGameId(), reviewDto.getUserId())){
             throw new RuntimeException("Recenzija od tog korisnika za tu igricu vec postoji");
+        }
+        int rating = reviewDto.getRating();
+
+        if(rating >= 6 || rating <= 0){
+            throw new RuntimeException("Rating mora biti izmedju 1 i 5");
         }
 
         Review newReview = new Review();
