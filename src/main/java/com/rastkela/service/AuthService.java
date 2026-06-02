@@ -57,7 +57,7 @@ public class AuthService {
 
     public boolean isAdmin(HttpSession session) {
         UserSession user = getCurrentUser(session);
-        return user.isAdmin();
+        return user!= null && user.isAdmin();
     }
 
 }

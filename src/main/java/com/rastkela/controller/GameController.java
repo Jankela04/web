@@ -4,6 +4,7 @@ import com.rastkela.dto.game.GameBasicDto;
 import com.rastkela.dto.game.GameDetailDto;
 import com.rastkela.dto.game.GameFormDto;
 import com.rastkela.dto.game.GameResponse;
+import com.rastkela.exception.ForbiddenException;
 import com.rastkela.model.Game;
 import com.rastkela.model.Review;
 import com.rastkela.service.AuthService;
@@ -83,7 +84,7 @@ public class GameController {
         boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
         Game newGame = gameService.createGame(newGameData);
 
@@ -95,7 +96,7 @@ public class GameController {
         boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
         Game newGame = gameService.updateGame(id, gameData);
 
@@ -107,7 +108,7 @@ public class GameController {
         boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
 
         Game game = gameService.findOne(id);
@@ -125,7 +126,7 @@ public class GameController {
         boolean isAdmin = authService.isAdmin(session);
 
         if(!isAdmin){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            throw new ForbiddenException("Admin privileges required") ;
         }
 
         Game game = gameService.findOne(id);

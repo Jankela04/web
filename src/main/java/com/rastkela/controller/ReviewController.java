@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rastkela.dto.CreateReviewDto;
 import com.rastkela.dto.UserSession;
+import com.rastkela.exception.ForbiddenException;
 import com.rastkela.model.Review;
 import com.rastkela.service.AuthService;
 import com.rastkela.service.ReviewService;
@@ -53,7 +54,7 @@ public class ReviewController {
         UserSession user = (UserSession) authService.getCurrentUser(session);
 
         if(!(user.getId()==reviewForm.getUserId())){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            throw new ForbiddenException("Nece da moze") ;
         }
         Review newReview = reviewService.createReview(reviewForm);
         
