@@ -2,6 +2,7 @@ package com.rastkela.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,10 +17,11 @@ public class UserAchievement implements Serializable{
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user; 
+    private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private Game game; 
+    private Game game;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Achievement achievement;

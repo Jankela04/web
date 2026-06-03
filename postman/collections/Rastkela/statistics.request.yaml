@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:8080/api/users/me/statistics
+method: GET
+order: 4503543470589174
