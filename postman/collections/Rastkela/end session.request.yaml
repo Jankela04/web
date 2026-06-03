@@ -1,0 +1,5 @@
+$kind: http-request
+name: end session
+url: http://localhost:8080/api/sessions/1/end
+method: POST
+order: 4476565614541707

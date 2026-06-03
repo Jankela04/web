@@ -30,7 +30,10 @@ public class Session implements Serializable {
     }
 
     @Transient
-    public Long getDurationInSeconds(){
+    public Long getDurationInSeconds() {
+        if (startedAt == null || endedAt == null) {
+            return 0L;
+        }
         return Duration.between(startedAt, endedAt).getSeconds();
     }
     public Long getId() { return this.id;}

@@ -1,0 +1,15 @@
+$kind: http-request
+url: http://localhost:8080/api/sessions
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"game\": {\r
+
+    \    \"id\": 1\r
+
+    \  }\r
+
+    }"
+order: 4481446209534696

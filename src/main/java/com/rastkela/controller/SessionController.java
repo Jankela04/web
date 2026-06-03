@@ -1,6 +1,7 @@
 package com.rastkela.controller;
 
 import com.rastkela.dto.SessionDTO;
+import com.rastkela.dto.UserSession;
 import com.rastkela.enums.UserRole;
 import com.rastkela.model.Session;
 import com.rastkela.model.User;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -25,8 +27,7 @@ public class SessionController {
     @GetMapping
     public ResponseEntity<List<SessionDTO>> getAllSessions(HttpSession session) {
 
-        User user = (User) session.getAttribute("user");
-
+        UserSession user = (UserSession) session.getAttribute("user");
         boolean isAuthorised =
                 user != null &&
                         user.getRole() == UserRole.ADMIN;
@@ -43,7 +44,7 @@ public class SessionController {
             @PathVariable Long id,
             HttpSession httpSession) {
 
-        User user = (User) httpSession.getAttribute("user");
+        UserSession user = (UserSession) httpSession.getAttribute("user");
 
         boolean isAuthorised =
                 user != null &&
@@ -57,11 +58,23 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<SessionDTO> create(
-            @RequestBody Session session) {
+    public ResponseEntity<SessionDTO> create(HttpSession httpSession,
+                                             @RequestBody Session session) {
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
+        UserSession loggedUser =
+                (UserSession) httpSession.getAttribute("user");
+
+        if (loggedUser == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        User user = new User();
+        user.setId(loggedUser.getId());
+
+        session.setUser(user);
+        session.setStartDate(LocalDateTime.now());
+
+        return ResponseEntity.status(201)
                 .body(sessionService.create(session));
     }
 
@@ -77,7 +90,7 @@ public class SessionController {
             @PathVariable Long id,
             HttpSession httpSession) {
 
-        User user = (User) httpSession.getAttribute("user");
+        UserSession user = (UserSession) httpSession.getAttribute("user");
 
         boolean isAdmin =
                 user != null &&

@@ -52,9 +52,7 @@ public class SessionService {
 
         session.setEndDate(LocalDateTime.now());
 
-        Session saved = sessionRepository.save(session);
-
-        return SessionDTO.fromEntity(saved);
+        return SessionDTO.fromEntity(sessionRepository.save(session));
     }
 
     public void delete(Long id) {

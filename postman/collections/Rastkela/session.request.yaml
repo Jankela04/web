@@ -1,0 +1,8 @@
+$kind: http-request
+name: session
+url: http://localhost:8080/api/sessions
+method: GET
+body:
+  type: json
+  content: ""
+order: 2909282094148079
